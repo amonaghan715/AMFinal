@@ -61,10 +61,12 @@ def main():
 
                     filters[tag] = spec
                 
+                print("\n")
                 hits = line_search.search(query=search_word, expand=True, filters=filters)
                 if hits:
                     for hit in hits:
                         print(hit)
+                        print("\n")
                 else:
                     print("Unknown word or no lines that match that theme.")
                     print("Wouldst thou provide a synonym?\n")
