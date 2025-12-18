@@ -21,8 +21,9 @@ class Loader:
     WORD_RE = re.compile(r"[a-z']+")
     SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
-    def __init__(self, in_dir="shakespeare_works", out_json="data.jsonl"):
+    def __init__(self, load_and_train, in_dir="shakespeare_works", out_json="data.jsonl"):
         """Initialize a Loader object."""
+        self.load_data = load_and_train
         self.directory = Path(in_dir)
         self.data_file = Path(out_json)
         self.plays = sorted(self.directory.glob("*.txt"))
@@ -38,9 +39,9 @@ class Loader:
         return self.plays
     
 
-    def get_models(self, train=False):
+    def get_models(self):
         """Return the Word2Vec and FastText models."""
-        self._train_models(train)
+        self._train_models()
         return self.wv_model, self.ft_model
 
 
@@ -51,6 +52,10 @@ class Loader:
         Args: None
         Returns: None
         """
+        # Only parse data from plays folder if the data file does not already exist.
+        if self.data_file.exists() and not self.load_data:
+            return
+        
         with self.data_file.open('w', encoding="utf-8") as file:
             for play in self.plays:
                 parser = Parser(play.stem)
@@ -58,14 +63,14 @@ class Loader:
                     file.write(json.dumps(row, ensure_ascii=False) + "\n")
     
     
-    def _train_models(self, train=False):
+    def _train_models(self):
         """Train the Word2Vec model on the text from the data file."""
-        # Load existing embedding models if not training.
-        if not train:
-            if self.wv_model_path.exists():
+        # Load existing embedding models if they exist already.
+        if not self.load_data:
+            if self.wv_model_path:
                 self.wv_model = Word2Vec.load(self.wv_model_path)
         
-            if self.ft_model_path.exists():
+            if self.ft_model_path:
                 self.ft_model = FastText.load(self.ft_model_path)
             return
         
