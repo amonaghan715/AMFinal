@@ -38,9 +38,9 @@ class Loader:
         return self.plays
     
 
-    def get_models(self):
+    def get_models(self, train=False):
         """Return the Word2Vec and FastText models."""
-        self._train_models()
+        self._train_models(train)
         return self.wv_model, self.ft_model
 
 

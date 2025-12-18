@@ -1,5 +1,5 @@
 from folder_loader import Loader
-from search import Searcher
+from searcher import Searcher
 
 def main():
     """The main function to run the system."""
@@ -20,4 +20,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
