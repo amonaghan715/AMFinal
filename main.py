@@ -1,5 +1,6 @@
 from folder_loader import Loader
 from searcher import WordSearcher, LineSearcher
+from generator import Generator
 
 def main():
     """The main function to run the system."""
@@ -10,7 +11,6 @@ def main():
     if "y" in answer.lower():
         load_and_train = False
 
-    keepGoing = True
     data_file = "data.jsonl"
     loader = Loader(load_and_train)
     loader.parse_folder()
@@ -18,8 +18,10 @@ def main():
 
     word_search = WordSearcher(wv_model, ft_model)
     line_search = LineSearcher(data_file, word_search)
+    generator = Generator()
 
-    while(keepGoing):
+    keepGoing = True
+    while(keepGoing): # Repeat questions to user as long as invalid queries are entered.
         print("1. Run the Shakespearean thesaurus")
         print("2. Find lines related to a theme")
         print("3. Generate a line of Shakespeare-inspired text")
@@ -41,7 +43,7 @@ def main():
             print("\n")
         elif "2" in action:
             repeat = True
-            while(repeat):
+            while(repeat): # Repeat questions to user as long as invalid queries are entered.
                 repeat = False
                 search_word = input("Please enter a theme to search for: ")
 
