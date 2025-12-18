@@ -19,5 +19,11 @@ this is better when working with "rare" words or more uncommon language, which i
 - docstrings and documentation
 
 # Acknowledgements
+Gensim onine resource about FastText models: https://radimrehurek.com/gensim/auto_examples/tutorials/run_fasttext.html
+
 The original source of the Shakespeare works used in this model was Folger Digital Texts. The only change made to these files was removing informational text from the beginning of each file pertaining to writing, editing, origin, file creation dates, and character information.
 - Folger Creative Commons Liscense: https://creativecommons.org/licenses/by-nc/3.0/
+
+# To dos
+- Search for related lines
+- Generate text
