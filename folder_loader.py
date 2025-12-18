@@ -2,7 +2,6 @@ import json
 import re
 from pathlib import Path
 from play_parser import Parser
-from typing import Iterator, List
 from gensim.models import Word2Vec
 from gensim.models.fasttext import FastText
 
@@ -21,7 +20,7 @@ class Loader:
     WORD_RE = re.compile(r"[a-z']+")
     SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
-    def __init__(self, load_and_train, in_dir="shakespeare_works", out_json="data.jsonl"):
+    def __init__(self, load_and_train: bool, in_dir="shakespeare_works", out_json="data.jsonl"):
         """Initialize a Loader object."""
         self.load_data = load_and_train
         self.directory = Path(in_dir)
@@ -102,7 +101,7 @@ class Loader:
 
     class _SentenceCorpus:
         """DOCSTRING"""
-        def __init__(self, data_file, sentence_re, word_re):
+        def __init__(self, data_file: Path, sentence_re: re.Pattern, word_re: re.Pattern):
             self.data_file = data_file
             self.sentence_re = sentence_re
             self.word_re = word_re
@@ -114,6 +113,6 @@ class Loader:
                 for line in file:
                     row = json.loads(line)
                     for chunk in self.sentence_re.split(row["text"].strip()):
-                        toks = self.word_re.findall(chunk.lower())
-                        if toks:
-                            yield toks
+                        tokens = self.word_re.findall(chunk.lower())
+                        if tokens:
+                            yield tokens
