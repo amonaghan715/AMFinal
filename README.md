@@ -10,6 +10,8 @@ this is better when working with "rare" words or more uncommon language, which i
 # Installation Instructions and Requirements
 - gensim (need to be in an environment that has gensim installed)
 
+When you first run the system, you will be asked if you have ever used the tool before. If it is your first time running the program on your machine, or if you have deleted the data or model files, enter 'yes' or the 'y' character. The system will then take a moment to parse the text data from the shakespeare_works folder to the data file, and train the embeddings models on the data. From then on, anytime you rerun the system you can simply answer 'no or 'n' to that initial query, and the program will use the data and models that it has already stored and trained.
+
 # TODOS
 - Add genre tags
 - user interaction
