@@ -21,7 +21,7 @@ class WordSearcher:
         self.ft_model = ft_model
     
 
-    def n_similar_words(self, in_word: str, n: int):
+    def n_similar_words(self, in_word, n):
         """
         Find the n most similar words to the input word based on combined
         scores from the two trained models, with the score from the Word2Vec
@@ -54,7 +54,7 @@ class LineSearcher:
 
     WORD_RE = re.compile(r"[a-z']+")
     
-    def __init__(self, data_path: str, word_search=None):
+    def __init__(self, data_path, word_search=None):
         """DOCSTRING"""
         self.data_path = Path(data_path)
         self.word_search = word_search
@@ -68,7 +68,7 @@ class LineSearcher:
         self._compute_doc_freq()
 
     
-    def _tokenize(self, text: str):
+    def _tokenize(self, text):
         """DOCSTRING"""
         return LineSearcher.WORD_RE.findall(text.lower())
     
@@ -103,12 +103,12 @@ class LineSearcher:
                 self.doc_freq[token] = self.doc_freq.get(token, 0) + 1
 
 
-    def _idf(self, token: str):
+    def _idf(self, token):
         """DOCSTRING"""
         return math.log((self.num_lines + 1) / (self.doc_freq.get(token, 0) + 1))
     
 
-    def _expand_query_tokens(self, query: str, n=6):
+    def _expand_query_tokens(self, query, n=6):
         """DOCSTRING"""
         tokens = self._tokenize(query)
         if not self.word_search or not tokens:
@@ -126,7 +126,7 @@ class LineSearcher:
         return expanded
 
 
-    def search(self, query: str, top_k=5, expand=True, expand_n=6, filters=None):
+    def search(self, query, top_k=5, expand=True, expand_n=6, filters=None):
         """DOCSTRING"""
         if not query or not query.strip():
             return []

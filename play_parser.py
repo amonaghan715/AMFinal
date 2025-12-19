@@ -4,7 +4,9 @@ Course: Artificial Intelligence CSCI 2400
 Assignment: Final Project
 Date: 12/19/2025
 
-Description: Parses each file passed to it into json objects to be stored in the data file. Each json object contains the text from each line in the play, along with tags for its play of origin, act and scene numbers, and speaker.
+Description: Parses each file passed to it into json objects to be stored in the data
+file. Each json object contains the text from each line in the play, along with tags
+for its play of origin, act and scene numbers, and speaker.
 Known Bugs: None
 """
 import re
@@ -18,8 +20,8 @@ class Parser:
                     scene - the scene number for the current lines to be tagged under.
                     speaker - the speaker name for the current lines to be tagged under.
                     lines - the list of lines in the current speaker's speech.
-                    object - the full block to be added to the data file, with text and
-                    tags included.
+                    objects - a list of all lines from a given play; to be added to the data
+                    file with text and tags included.
     """
     ACT_RE = re.compile(r"^\s*ACT\s+(\d+)\s*$") # For act number tags.
     SCENE_RE = re.compile(r"^\s*Scene\s+(\d+)\s*$") # For scene number tags.
@@ -39,15 +41,15 @@ class Parser:
         self.scene = None
         self.speaker = None
         self.lines = []
-        self.object = []
+        self.objects = []
 
 
     def _clear(self):
-        """DOCSTRING"""
+        """Clear the current lines list into self.objects to make room for a new chunk."""
         if self.speaker is not None and self.lines:
             text = "\n".join(self.lines).strip()
             if text:
-                self.object.append({
+                self.objects.append({
                     "play_id" : self.play_id,
                     "act" : self.act,
                     "scene" : self.scene,
@@ -60,7 +62,12 @@ class Parser:
 
 
     def parse_line(self, line):
-        """DOCSTRING"""
+        """
+        Take the given line and add it to self.lines with the proper tags attached.
+
+        Args: line - the line from a play to be tagged and added to self.lines.
+        Returns: None
+        """
         line = line.rstrip()
 
         matches = self.ACT_RE.match(line)
@@ -106,9 +113,14 @@ class Parser:
 
 
     def parse_file(self, path):
-        """DOCSTRING"""
+        """
+        Take in a play file and parse it into tagged lines.
+        
+        Args: path - the path to the play file to be parsed into tagged lines.
+        Returns: a list of tagged lines from the given play.
+        """
         for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
             self.parse_line(line)
 
         self._clear()
-        return self.object
+        return self.objects

@@ -29,7 +29,7 @@ class Loader:
     WORD_RE = re.compile(r"[a-z']+")
     SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
-    def __init__(self, load_and_train: bool, in_dir="shakespeare_works", out_json="data.jsonl"):
+    def __init__(self, load_and_train, in_dir="shakespeare_works", out_json="data.jsonl"):
         """Initialize a Loader object."""
         self.load_data = load_and_train
         self.directory = Path(in_dir)
@@ -110,7 +110,7 @@ class Loader:
 
     class _SentenceCorpus:
         """DOCSTRING"""
-        def __init__(self, data_file: Path, sentence_re: re.Pattern, word_re: re.Pattern):
+        def __init__(self, data_file, sentence_re, word_re):
             self.data_file = data_file
             self.sentence_re = sentence_re
             self.word_re = word_re
