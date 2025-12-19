@@ -13,7 +13,7 @@ import json
 import re
 import random
 from pathlib import Path
-from collections import defaultDict, Counter
+from collections import defaultdict, Counter
 
 class Generator:
     """
@@ -39,27 +39,25 @@ class Generator:
         self.word_search = word_search
         self.data_path = Path(data_path)
         self.order = 3
-        self.model = defaultDict(Counter)
+        self.model = defaultdict(Counter)
         self.starts = []
 
-        self._train
+        self._train()
 
 
     def _tokenize(self, text):
         """Turn all of the words in the given text into individual tokens."""
-        return Generator.WORD_RE.findall(text)
+        return Generator.WORD_RE.findall(text.lower())
     
 
     def _train(self):
         """Build a Markov transition model based on words and context from the
         data file."""
+
         with self.data_path.open('r', encoding="utf-8") as file:
             for chunk in file:
                 line = json.loads(chunk)
                 text = line.get("text", "").strip()
-                if not text:
-                    continue
-                    
                 tokens = self._tokenize(text)
                 if len(tokens) <= self.order:
                     continue
