@@ -35,7 +35,7 @@ When you first run the system, you will be asked if you have ever used the tool 
 # Limitations and Biases
 This model is, of course, not perfect, and has a few limitations and biases.
 - The model is trained on the Shakespeare's plays as a whole, and not individually on each genre (tragedy, comedy, history). Thus, it does not account for shifts in meanings of words in different plays. For example, "blood" in a comedy might mean something very different from "blood" in a tragedy or in a history, but all meanings and neighbors are treated equally by the model.
-- In seeking to achieve a high degree of domain specificity with this model, I have traded breadth of vocabulary. many words that one might want to search for that are common in our modern language (such as "hello") are not present in the training corpus, and therefore are missing from the model.
+- In seeking to achieve a high degree of domain specificity with this model, I have traded breadth of vocabulary. Many words that one might want to search for that are common in our modern language (such as "hello") are not present in the training corpus, and therefore are missing from the model.
 
 # Acknowledgements
 Gensim onine resource about FastText models: https://radimrehurek.com/gensim/auto_examples/tutorials/run_fasttext.html
