@@ -47,6 +47,25 @@ class WordSearcher:
 
         sorted_similars = sorted(similar_words.items(), key=lambda x: x[1], reverse=True)
         return sorted_similars[:n]
+    
+
+    def similarity(self, word1, word2):
+        """
+        Return the similarity score between the input words.
+        
+        Args: word1, word2 - the input words to be compared.
+        Returns: The similarity score (between 0 and 1) of the input words.
+        """
+        score = 0
+
+        if word1 in self.wv_model.wv and word2 in self.wv_model.wv:
+            score += self.wv_model.wv.similarity(word1, word2) * 0.7
+        if word1 in self.ft_model.wv and word2 in self.ft_model.wv:
+            score += self.ft_model.wv.similarity(word1, word2) * 0.3
+        
+        if score == 0:
+            print("One or both of the given words was not known by the model.")
+        return score
 
 
 class LineSearcher:
