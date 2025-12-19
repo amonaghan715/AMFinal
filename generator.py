@@ -17,7 +17,7 @@ from collections import defaultDict, Counter
 
 class Generator:
     """
-    Represents a Generator object.
+    Represents a Generator object for Shakespearean text generation.
     
     Attributes: word_search - a word searcher object for finding word similarities.
                 data_path - the path to the data file.
@@ -35,7 +35,6 @@ class Generator:
         Args: word_search - an optional WordSearcher object to help with theme
               bias in text generation.
               data_path - the path to the data file.
-        Returns: None
         """
         self.word_search = word_search
         self.data_path = Path(data_path)

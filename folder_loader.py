@@ -4,7 +4,9 @@ Course: Artificial Intelligence CSCI 2400
 Assignment: Final Project
 Date: 12/19/2025
 
-Description:
+Description: A class that loads play text data from the text files provided,
+tokenizes said text data, and trains two models on it: a Word2Vec skip-gram
+model, and a FastText model.
 Known Bugs: None
 """
 import json
@@ -16,9 +18,8 @@ from gensim.models.fasttext import FastText
 
 class Loader:
     """
-    A class that loads play text data from the text files provided, tokenizes
-    said text data, and trains two models on it: a Word2Vec skip-gram model,
-    and a FastText model.
+    Represents a Loader object, used for loading play data and training
+    embedding models.
     
     Attributes: directory - the directory that holds the play files.
                 data_file - the file to dump play text data to.
@@ -30,7 +31,14 @@ class Loader:
     SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
     def __init__(self, load_and_train, in_dir="shakespeare_works", out_json="data.jsonl"):
-        """Initialize a Loader object."""
+        """
+        Initialize a Loader object.
+        
+        Args: load_and_train - whether to load the play data to the data file
+              and train the word embedding models, or use stored data/models.
+              in_dir - the path to the directory holding the plays.
+              out_json - the path to the jsonl file that will hold the play data.
+        """
         self.load_data = load_and_train
         self.directory = Path(in_dir)
         self.data_file = Path(out_json)
@@ -72,8 +80,8 @@ class Loader:
     
     
     def _train_models(self):
-        """Train the Word2Vec model on the text from the data file."""
-        # Load existing embedding models if they exist already.
+        """Train the Word2Vec and FastText models on the text from the data file."""
+        # Load embedding models if they exist already.
         if not self.load_data:
             if self.wv_model_path:
                 self.wv_model = Word2Vec.load(self.wv_model_path)
@@ -82,7 +90,7 @@ class Loader:
                 self.ft_model = FastText.load(self.ft_model_path)
             return
         
-        # Train the Word2Vec and FastText models on the text corpus.
+        # Train the Word2Vec and FastText models on the text corpus if they do not already exist.
         sentences = self._SentenceCorpus(self.data_file, Loader.SENTENCE_RE, Loader.WORD_RE)
 
         self.wv_model = Word2Vec(
@@ -109,15 +117,28 @@ class Loader:
 
 
     class _SentenceCorpus:
-        """DOCSTRING"""
+        """
+        An inner class for Loader objects, used to represent each line/sentence
+        from the given play file as a list of tokens.
+        
+        Attributes: data_file - the file that stores the text of the.
+                    sentence_re - the regex pattern used to identify lines/sentences.
+                    word_rd - the regex pattern used to identify words.
+        """
         def __init__(self, data_file, sentence_re, word_re):
+            """
+            Initialize a SentenceCorpus object.
+
+            Args: data_file, sentence_re, word_re.
+            """
             self.data_file = data_file
             self.sentence_re = sentence_re
             self.word_re = word_re
 
         
         def __iter__(self):
-            """DOCSTRING"""
+            """Take each line from the given play file and split it into
+            a list of word tokens."""
             with self.data_file.open('r', encoding="utf-8") as file:
                 for line in file:
                     row = json.loads(line)

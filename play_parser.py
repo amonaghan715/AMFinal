@@ -31,10 +31,9 @@ class Parser:
 
     def __init__(self, play_id):
         """
-        Initialize a Parser class.
+        Initialize a Parser object.
         
         Args: play_id - the name of the play file in which the line to be loaded was said.
-        Returns: None
         """
         self.play_id = play_id
         self.act = None
@@ -70,6 +69,7 @@ class Parser:
         """
         line = line.rstrip()
 
+        # Make the line's 'act' tag.
         matches = self.ACT_RE.match(line)
         if matches:
             self._clear()
@@ -77,12 +77,14 @@ class Parser:
             self.scene = None
             return
         
+        # Make the line's 'scene' tag.
         matches = self.SCENE_RE.match(line)
         if matches:
             self._clear()
             self.scene = int(matches.group(1))
             return
         
+        # Ignore underlines and stage directions.
         if (
             self.UNDERLINE_RE.match(line)
             or self.STAGE_RE.match(line)
@@ -96,6 +98,7 @@ class Parser:
                 self._clear()
             return
         
+        # Make the line's 'speaker' tag.
         matches = self.SPEAKER_RE.match(line)
         if matches:
             name = matches.group(1).strip()
