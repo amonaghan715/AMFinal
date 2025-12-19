@@ -1,9 +1,17 @@
+"""
+Author: Anna Monaghan
+Course: Artificial Intelligence CSCI 2400
+Assignment: Final Project
+Date: 12/19/2025
+
+Description: This is the main file that runs the program.
+Known Bugs: None
+"""
 from folder_loader import Loader
 from searcher import WordSearcher, LineSearcher
 from generator import Generator
 
 def main():
-    """The main function to run the system."""
     print("Welcome to the Shakespeare Searcher!")
     answer = input("Hast thou used this fine tool before? (y/n): ")
 
@@ -18,7 +26,7 @@ def main():
 
     word_search = WordSearcher(wv_model, ft_model)
     line_search = LineSearcher(data_file, word_search)
-    generator = Generator()
+    generator = Generator(word_search)
 
     keepGoing = True
     while(keepGoing): # Repeat questions to user as long as invalid queries are entered.
@@ -73,8 +81,12 @@ def main():
                     print("Unknown word or no lines that match that theme.")
                     print("Wouldst thou provide a synonym?\n")
                     repeat = True
-        #elif "3" in action:
-            
+            print("\n")
+        elif "3" in action:
+            seed = input("Enter seed (1 or 2 word beginning for your generated text): ")
+
+            text = generator.generate(seed)
+            print(text)
         else:
             print("Unknown action. Please enter the action you would like to take.\n")
 

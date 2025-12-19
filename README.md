@@ -18,13 +18,13 @@ this is better when working with "rare" words or more uncommon language, which i
 
 **data.jsonl**: A json library file containing a json object for every line spoken in a Shakespeare play. This data is parsed from the text files in shakespeare_works, and is used both as the training corpus for the word embedding models, and to draw n-grams from for text generation.
 
-**folder_loader.py**: 
+**folder_loader.py**: A class that loads play text data from the text files provided, tokenizes said text data, and trains two models on it: a Word2Vec skip-gram model, and a FastText model.
 
 **generator.py**: 
 
-**main.py**: 
+**main.py**: Contains the main function that runs the system.
 
-**play_parser.py**: 
+**play_parser.py**: A Parser class, representing a single Parser object. Attributes include play_id, act, scene, speaker, text, lines, and object.
 
 **searcher.py**: 
 
@@ -41,14 +41,6 @@ When you first run the system, you will be asked if you have ever used the tool 
 - The model is trained on the plays as a whole and not inidividually on acts, so all meanings/neighbors of a word are clumped together. Thus, it does not account for shifts in meanings/symbolisms of words as a play progresses, nor does it have an understanding of the difference of words in different plays. For example, "blood" in a comedy might mean something very different from "blood" in a tragedy or a history, but all meanings and neighbors are treated equally in this model.
 - The simlarity scores from the word2vec model are scored slgihtly higher. This is because fasttext model bases similarity score purely on word structure (which often pertains to semantics, but not always), and i wanted to account for the cases where spelling similarity does not mean semantic similarity.
 - Trading some quality for the sake of domain specificity (comparitively small corpus)
-
-# TODOS
-- Add genre tags
-- user interaction
-- create search mechanism
-- use second model for modern langauge command processing?
-- README
-- docstrings and documentation
 
 # Acknowledgements
 Gensim onine resource about FastText models: https://radimrehurek.com/gensim/auto_examples/tutorials/run_fasttext.html
