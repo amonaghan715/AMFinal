@@ -1,4 +1,4 @@
-# AMFinal
+# Anna Monaghan Final Project
 GitHub repo link: https://github.com/amonaghan715/AMFinal.git
 
 **The Shakespeare Searcher**: Welcome to the Shakespeare Searcher! The Shakespeare Searcher is a tool that uses Word2Vec and FastText word embedding models to search through and generate text from a corpus of William Shakespeare's plays. Shakespeare's works have an unusually high density of poetic language and metaphor compared to modern texts, and the language used is also comparatively archaic. For these reasons, word embedding models trained on modern texts and larger corpuses offer lower quality results when used on Shakespearean text. The goal of this project was to change that by training word embedding models on a corpus that only contains Shakespearean language, and in doing so, hopefully provide a higher quality tool for searching and generating this specific style of text.
