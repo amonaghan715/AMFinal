@@ -19,17 +19,22 @@ class Generator:
     """
     Represents a Generator object.
     
-    Attributes:
+    Attributes: word_search - a word searcher object for finding word similarities.
+                data_path - the path to the data file.
+                order - 
+                model - 
+                starts - 
     """
     WORD_RE = re.compile(r"[a-z']+|[.,;:!?]")
 
-    def __init__(self, data_path="data.jsonl"):
+    def __init__(self, word_search=None, data_path="data.jsonl"):
         """
         Initialize a Generator object.
 
         Args: data_path - the path to the data file.
         Returns: None
         """
+        self.word_search = word_search
         self.data_path = Path(data_path)
         self.order = 3
         self.model = defaultDict(Counter)
@@ -85,7 +90,7 @@ class Generator:
         return None
     
 
-    def generate(self, max_tokens=30, seed=None):
+    def generate(self, max_tokens=30, theme=None, seed=None, alpha=1.5):
         """
         Generate a line of text based on the provided seed and the transition
         model.
@@ -107,7 +112,12 @@ class Generator:
         out = list(context)
 
         for _ in range(max_tokens - self.order):
-            next = self._sample_next(tuple(out[-self.order:]))
+            context = tuple(out[-self.order:])
+            if theme:
+                next = self._sample_next_themed(context, theme)
+            else:
+                next = self._sample_next(context)
+
             # Restart if a "dead end" is encountered.
             if next is None:
                 out.extend(list(random.choice(self.starts)))
@@ -118,6 +128,48 @@ class Generator:
                 break
 
         return self._detokenize(out)
+    
+
+    def _theme_similarity(self, theme, word):
+        """Return similarity value between the given word and the theme (value
+        between 0 and 1). Return 0 if not possible."""
+        if not self.word_search or not theme:
+            return 0
+        
+        similarity = float(self.word_search.similarity(word, theme))
+        if similarity == 0:
+            return 0
+        
+        # Return similarity score to 0,1 range.
+        similarity = max(-1.0, min(1.0, similarity))
+        return (similarity + 1) / 2.0
+    
+
+    def _sample_next_themed(self, context, theme, alpha=1.5):
+        """Perform a weighted, random sample for the next word. Markov
+        counts are boosted based on theme similarity. A higher alpha value
+        puts more weight on theme similarity."""
+        choices = self.model.get(context)
+        if not choices:
+            return None
+        
+        words = []
+        weights = []
+
+        for word, count in choices.items():
+            similarity = self._theme_similarity(theme, word)
+            weight = count * (1 + alpha + similarity)
+            words.append(word)
+            weights.append(weight)
+
+        total = sum(weights)
+        r = random.random() * total
+        running_tot = 0.0
+        for word, weight in zip(words, weights):
+            running_tot += weight
+            if running_tot >= r:
+                return word
+        return words[-1]
     
 
     def _detokenize(self, tokens):
