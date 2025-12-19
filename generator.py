@@ -21,9 +21,10 @@ class Generator:
     
     Attributes: word_search - a word searcher object for finding word similarities.
                 data_path - the path to the data file.
-                order - 
-                model - 
-                starts - 
+                order - the number of context words the Markov transition model is based
+                on.
+                model - the Markov transition model.
+                starts - the starting context words for the generation.
     """
     WORD_RE = re.compile(r"[a-z']+|[.,;:!?]")
 
@@ -31,7 +32,9 @@ class Generator:
         """
         Initialize a Generator object.
 
-        Args: data_path - the path to the data file.
+        Args: word_search - an optional WordSearcher object to help with theme
+              bias in text generation.
+              data_path - the path to the data file.
         Returns: None
         """
         self.word_search = word_search
@@ -90,16 +93,18 @@ class Generator:
         return None
     
 
-    def generate(self, max_tokens=30, theme=None, seed=None, alpha=1.5):
+    def generate(self, max_tokens=30, theme=None, seed=None):
         """
         Generate a line of text based on the provided seed and the transition
         model.
 
         Args: max_tokens - the maximum number of tokens to generate to create
               a line with.
+              theme - the theme word to bias word choice towards.
               seed - the seed word or words for the line to be generated from.
         Returns: A line of Shakespearean-esc text.
         """
+        # Turn the seed words into the start context if there are enough.
         if seed:
             seed_tokens = self._tokenize(seed)
             if len(seed_tokens) >= self.order:
@@ -111,6 +116,7 @@ class Generator:
 
         out = list(context)
 
+        # Generate up to max_tokens next words based on provided context.
         for _ in range(max_tokens - self.order):
             context = tuple(out[-self.order:])
             if theme:
@@ -124,6 +130,7 @@ class Generator:
                 continue
             out.append(next)
 
+            # Finish if the line is long enough and a sentence has ended.
             if next in {".", "!", "?"} and len(out) > 9:
                 break
 
@@ -156,12 +163,14 @@ class Generator:
         words = []
         weights = []
 
+        # Generate a similarity weight for each possible word.
         for word, count in choices.items():
             similarity = self._theme_similarity(theme, word)
             weight = count * (1 + alpha + similarity)
             words.append(word)
             weights.append(weight)
 
+        # Perform a manual weighted draw from the word options.
         total = sum(weights)
         r = random.random() * total
         running_tot = 0.0
