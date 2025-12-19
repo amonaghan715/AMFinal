@@ -26,7 +26,7 @@ def main():
 
     word_search = WordSearcher(wv_model, ft_model)
     line_search = LineSearcher(data_file, word_search)
-    generator = Generator(word_search)
+    generator = Generator(data_file)
 
     keepGoing = True
     while(keepGoing): # Repeat questions to user as long as invalid queries are entered.
@@ -83,9 +83,10 @@ def main():
                     repeat = True
             print("\n")
         elif "3" in action:
-            seed = input("Enter seed (1 or 2 word beginning for your generated text): ")
+            theme = input("Enter a theme for your generated text: ")
+            seed = input("Enter a seed for your generated text: ")
 
-            text = generator.generate(seed)
+            text = generator.generate(theme, seed)
             print(text)
         else:
             print("Unknown action. Please enter the action you would like to take.\n")
