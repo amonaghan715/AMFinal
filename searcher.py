@@ -51,20 +51,24 @@ class WordSearcher:
 
     def similarity(self, word1, word2):
         """
-        Return the similarity score between the input words.
+        Return the similarity score between the input words. This
+        method weight the FastText model score slightly higher, as
+        FastText is better at handling out-of-vocabulary words.
         
         Args: word1, word2 - the input words to be compared.
         Returns: The similarity score (between 0 and 1) of the input words.
         """
         score = 0
+        word1 = word1.lower()
+        word2 = word2.lower()
+
+        score += self.ft_model.wv.similarity(word1, word2) * 0.6
 
         if word1 in self.wv_model.wv and word2 in self.wv_model.wv:
-            score += self.wv_model.wv.similarity(word1, word2) * 0.7
-        if word1 in self.ft_model.wv and word2 in self.ft_model.wv:
-            score += self.ft_model.wv.similarity(word1, word2) * 0.3
+            score += self.wv_model.wv.similarity(word1, word2) * 0.4
         
         if score == 0:
-            print("One or both of the given words was not known by the model.")
+            print("One or both of the given words was not known by the model.\n")
         return score
 
 
