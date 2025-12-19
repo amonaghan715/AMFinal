@@ -26,14 +26,16 @@ def main():
 
     word_search = WordSearcher(wv_model, ft_model)
     line_search = LineSearcher(data_file, word_search)
-    generator = Generator(data_file)
+    generator = Generator(word_search, data_file)
 
     keepGoing = True
     while(keepGoing): # Repeat questions to user as long as invalid queries are entered.
+        print("===============================================")
         print("1. Run the Shakespearean thesaurus")
         print("2. Find lines related to a theme")
         print("3. Generate a line of Shakespeare-inspired text")
         action = input("What wouldst thou like to do? ")
+        print("===============================================")
 
         if "1" in action:
             repeat = True
@@ -48,7 +50,6 @@ def main():
                 else:
                     print("Unknown word.\nWouldst thou provide a synonym?\n")
                     repeat = True
-            print("\n")
         elif "2" in action:
             repeat = True
             while(repeat): # Repeat questions to user as long as invalid queries are entered.
@@ -81,13 +82,12 @@ def main():
                     print("Unknown word or no lines that match that theme.")
                     print("Wouldst thou provide a synonym?\n")
                     repeat = True
-            print("\n")
         elif "3" in action:
             theme = input("Enter a theme for your generated text: ")
             seed = input("Enter a seed for your generated text: ")
 
-            text = generator.generate(theme, seed)
-            print(text)
+            text = generator.generate(theme=theme, seed=seed)
+            print(f"\n{text}\n")
         else:
             print("Unknown action. Please enter the action you would like to take.\n")
 
