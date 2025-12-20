@@ -1,4 +1,4 @@
-# AMFinal
+# Anna Monaghan Final Project
 GitHub repo link: https://github.com/amonaghan715/AMFinal.git
 
 **The Shakespeare Searcher**: Welcome to the Shakespeare Searcher! The Shakespeare Searcher is a tool that uses Word2Vec and FastText word embedding models to search through and generate text from a corpus of William Shakespeare's plays. Shakespeare's works have an unusually high density of poetic language and metaphor compared to modern texts, and the language used is also comparatively archaic. For these reasons, word embedding models trained on modern texts and larger corpuses offer lower quality results when used on Shakespearean text. The goal of this project was to change that by training word embedding models on a corpus that only contains Shakespearean language, and in doing so, hopefully provide a higher quality tool for searching and generating this specific style of text.
@@ -39,9 +39,9 @@ The system has 3 actions that it offers the user to take.
 3) Generate a line of pseudo Shakespearean text. The generated line will not be in iambic pentameter, but will mirror Shakespearean style, vocabulary, and grammatical structures.
 
 # Limitations and Biases
-This model is, of course, not perfect, and has a number of limitations and biases.
-- The model is trained on Shakespeare's plays as a whole, and not individually on each genre (tragedy, comedy, history). Thus, it does not account for shifts in meanings of words in different plays. For example, "blood" in a comedy might mean something very different from "blood" in a tragedy or in a history, but all meanings and neighbors are treated equally by the model.
-- In seeking to achieve a high degree of domain specificity with this model, I have traded breadth of vocabulary. Many words that one might want to search for that are common in our modern language (such as "hello") are not present in the training corpus, and therefore are missing from the model.
+This model is, of course, not perfect, and has a few limitations and biases.
+- The model is trained on the Shakespeare's plays as a whole, and not individually on each genre (tragedy, comedy, history). Thus, it does not account for shifts in meanings of words in different plays. For example, "blood" in a comedy might mean something very different from "blood" in a tragedy or in a history, but all meanings and neighbors are treated equally by the model.
+- In seeking to achieve a high degree of domain specificity with this model, I have traded breadth of vocabulary. many words that one might want to search for that are common in our modern language (such as "hello") are not present in the training corpus, and therefore are missing from the model.
 
 # Acknowledgements
 Gensim onine resource about FastText models: https://radimrehurek.com/gensim/auto_examples/tutorials/run_fasttext.html
